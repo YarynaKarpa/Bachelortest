@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mitteilungshefte – Altnürnberger Landschaft</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, serif;
+      background: #f5f0e8;
+      color: #2c2416;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      background: #5a3e1b;
+      color: #f5f0e8;
+      padding: 18px 24px;
+      text-align: center;
+    }
+    header h1 { font-size: 1.4rem; }
+    header p  { font-size: .85rem; opacity: .75; margin-top: 4px; }
+    .badge {
+      display: inline-block;
+      background: #8a6030;
+      color: #fff;
+      font-size: .75rem;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin-top: 6px;
+    }
+    #chat-container {
+      width: 100%;
+      max-width: 760px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 16px 0;
+      gap: 12px;
+      overflow-y: auto;
+    }
+    .msg {
+      max-width: 88%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      line-height: 1.6;
+      font-size: .95rem;
+    }
+    .msg.user {
+      background: #5a3e1b;
+      color: #f5f0e8;
+      align-self: flex-end;
+    }
+    .msg.bot {
+      background: #fff;
+      border: 1px solid #d6c9a8;
+      align-self: flex-start;
+    }
+    .msg.bot .sources {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #e8dfc8;
+      font-size: .78rem;
+      color: #7a6040;
+    }
+    .msg.bot .sources span {
+      display: inline-block;
+      background: #f0e8d0;
+      border-radius: 8px;
+      padding: 1px 8px;
+      margin: 2px 3px 2px 0;
+    }
+    .msg.thinking {
+      background: #f0e8d0;
+      color: #7a6040;
+      font-style: italic;
+      align-self: flex-start;
+    }
+    .msg.error { background: #fde8e8; border: 1px solid #f0b0b0; color: #900; }
+    #input-bar {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      gap: 8px;
+      padding: 16px;
+      background: #f5f0e8;
+      border-top: 1px solid #d6c9a8;
+      position: sticky;
+      bottom: 0;
+    }
+    #question {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid #c8b890;
+      border-radius: 24px;
+      background: #fff;
+      font-family: inherit;
+      font-size: .95rem;
+      outline: none;
+    }
+    #question:focus { border-color: #5a3e1b; }
+    button {
+      background: #5a3e1b;
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: .9rem;
+      transition: background .15s;
+    }
+    button:hover { background: #7a5a2b; }
+    button:disabled { background: #b0a090; cursor: default; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>📜 Mitteilungshefte – Altnürnberger Landschaft</h1>
+  <p>Fragen Sie die Datenbank der Vereinshefte</p>
+  <div class="badge">{{ doc_count }} Textabschnitte indexiert</div>
+</header>
+
+<div id="chat-container">
+  <div class="msg bot">
+    Guten Tag! Ich beantworte Ihre Fragen zu den Mitteilungsheften der
+    Altnürnberger Landschaft. Was möchten Sie wissen?
+  </div>
+</div>
+
+<div id="input-bar">
+  <input id="question" type="text"
+         placeholder="z.B. Was ist der Reichswald? Wann war die Jahrestagung 2022?"
+         autocomplete="off">
+  <button id="send-btn" onclick="sendQuestion()">Fragen</button>
+</div>
+
+<script>
+  const container = document.getElementById("chat-container");
+  const input     = document.getElementById("question");
+  const btn       = document.getElementById("send-btn");
+
+  input.addEventListener("keydown", e => { if (e.key === "Enter") sendQuestion(); });
+
+  function addMsg(html, cls) {
+    const d = document.createElement("div");
+    d.className = `msg ${cls}`;
+    d.innerHTML = html;
+    container.appendChild(d);
+    container.scrollTop = container.scrollHeight;
+    return d;
+  }
+
+  async function sendQuestion() {
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = "";
+    btn.disabled = true;
+
+    addMsg(escHtml(q), "user");
+    const thinking = addMsg("⏳ Suche in den Heften …", "thinking");
+
+    try {
+      const res = await fetch("/ask/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q }),
+      });
+      const data = await res.json();
+      thinking.remove();
+
+      if (data.error) {
+        addMsg("❌ " + escHtml(data.error), "error");
+      } else {
+        const sourceTags = data.sources
+          .map(s => `<span>Heft ${s.heft} · ${s.thema}</span>`)
+          .join("");
+        addMsg(
+          escHtml(data.answer).replace(/\n/g, "<br>") +
+          `<div class="sources">📎 Quellen: ${sourceTags}</div>`,
+          "bot"
+        );
+      }
+    } catch (e) {
+      thinking.remove();
+      addMsg("❌ Verbindungsfehler: " + escHtml(e.message), "error");
+    }
+    btn.disabled = false;
+    input.focus();
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+</script>
+</body>
+</html>

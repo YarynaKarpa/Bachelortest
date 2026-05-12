@@ -1,0 +1,42 @@
+[
+  {
+    "id": "heft_2023_01",
+    "text": "Die Altnürnberger Landschaft e.V. wurde 1945 gegründet und hat ihren Sitz in Nürnberg. Sie ist ein Heimatverein, der die Geschichte, Kultur und Traditionen der historischen Nürnberger Landschaft pflegt und dokumentiert. Der Verein gibt seit seiner Gründung regelmäßig Mitteilungshefte heraus.",
+    "metadata": {"heft": "2023/1", "thema": "Vereinsgeschichte"}
+  },
+  {
+    "id": "heft_2023_02",
+    "text": "Die historische Nürnberger Landschaft umfasste das Gebiet um die Reichsstadt Nürnberg, das sogenannte Nürnberger Territorium. Dieses Gebiet erstreckte sich über weite Teile des heutigen Mittelfranken.",
+    "metadata": {"heft": "2023/1", "thema": "Geschichte"}
+  },
+  {
+    "id": "heft_2023_03",
+    "text": "Das Mitteilungsheft Nr. 42 vom Herbst 2023 enthält einen Bericht über Ausgrabungen bei Lauf an der Pegnitz. Archäologen der Universität Erlangen-Nürnberg haben Überreste einer mittelalterlichen Siedlung freigelegt, die auf das 12. Jahrhundert datiert werden.",
+    "metadata": {"heft": "2023/3", "thema": "Archäologie"}
+  },
+  {
+    "id": "heft_2022_01",
+    "text": "Die Jahrestagung 2022 der Altnürnberger Landschaft fand im Oktober in Hersbruck statt. Über 120 Mitglieder nahmen teil. Vorträge widmeten sich der Geschichte der Hersbrucker Schweiz und dem Hopfenanbau als wichtigem Wirtschaftszweig.",
+    "metadata": {"heft": "2022/2", "thema": "Jahrestagung"}
+  },
+  {
+    "id": "heft_2022_02",
+    "text": "Der Hopfenanbau in der Hersbrucker Schweiz hat eine lange Tradition. Bereits im 15. Jahrhundert wurde Hopfen für die Nürnberger Brauereien angebaut. Die Region gehörte zu den bedeutendsten Hopfenanbaugebieten Deutschlands.",
+    "metadata": {"heft": "2022/2", "thema": "Landwirtschaft"}
+  },
+  {
+    "id": "heft_2021_01",
+    "text": "Das Mitteilungsheft erscheint dreimal jährlich. Der Jahresbeitrag für Mitglieder beträgt 35 Euro und beinhaltet den Bezug aller drei Ausgaben. Neue Mitglieder können sich über die Vereinswebseite oder beim Vorstand anmelden.",
+    "metadata": {"heft": "2021/1", "thema": "Vereinsinformationen"}
+  },
+  {
+    "id": "heft_2021_02",
+    "text": "Die Nürnberger Landwehr war ein System von Befestigungsanlagen, das das Territorium der Reichsstadt sicherte. Sie bestand aus Erdwällen, Gräben und Hecken. Reste sind heute noch bei Lauf, Altdorf und Schwabach zu finden.",
+    "metadata": {"heft": "2021/2", "thema": "Befestigungen"}
+  },
+  {
+    "id": "heft_2020_01",
+    "text": "Die Burg Lichtenstein bei Lauf an der Pegnitz war im 14. und 15. Jahrhundert ein wichtiger Verwaltungssitz in der östlichen Nürnberger Landschaft. Reste der Burganlage sind heute noch erhalten.",
+    "metadata": {"heft": "2020/2", "thema": "Burgen"}
+  }
+]
